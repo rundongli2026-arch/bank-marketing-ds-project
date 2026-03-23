@@ -1,0 +1,5 @@
+feature_set,model,tn,fp,fn,tp
+with_duration,Logistic Regression,1255,214,263,1059
+with_duration,Gradient Boosting,1232,237,188,1134
+without_duration,Logistic Regression,1202,267,580,742
+without_duration,Gradient Boosting,1260,209,507,815

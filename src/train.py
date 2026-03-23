@@ -1,67 +1,57 @@
-﻿from pathlib import Path
+﻿from __future__ import annotations
+
+import os
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import (
-    confusion_matrix,
-    f1_score,
-    precision_score,
-    recall_score,
-    roc_auc_score,
-)
+from sklearn.model_selection import train_test_split
 
-from data_utils import load_dataset, make_preprocessor, split_xy
+from business_metrics import (
+    BusinessAssumptions,
+    build_targeting_recommendation,
+    evaluate_thresholds,
+    evaluate_topk,
+    simulate_business,
+)
+from data_utils import load_dataset, split_xy
+from evaluate import (
+    build_models,
+    evaluate_binary_classifier,
+    run_cv_robustness,
+    summarize_leakage,
+)
+from plot_utils import (
+    ensure_dir,
+    save_cumulative_gains,
+    save_precision_recall_curve,
+    save_roc_curve,
+    save_threshold_tradeoff,
+)
 
 
 RANDOM_STATE = 42
 REPORT_DIR = Path("reports")
-REPORT_DIR.mkdir(parents=True, exist_ok=True)
+RESULT_DIR = Path("results")
+FIGURE_DIR = RESULT_DIR / "figures"
+
+for p in [REPORT_DIR, RESULT_DIR, FIGURE_DIR]:
+    ensure_dir(p)
 
 
-def evaluate_model(pipe, X_train, y_train, X_test, y_test):
-    pipe.fit(X_train, y_train)
-    proba = pipe.predict_proba(X_test)[:, 1]
-    pred = (proba >= 0.5).astype(int)
-    return {
-        "roc_auc": roc_auc_score(y_test, proba),
-        "f1": f1_score(y_test, pred),
-        "precision": precision_score(y_test, pred),
-        "recall": recall_score(y_test, pred),
-        "confusion_matrix": confusion_matrix(y_test, pred),
-        "proba": proba,
-    }
+def save_table(df: pd.DataFrame, file_name: str) -> None:
+    """Save a table to both reports/ and results/ for analysis + portfolio display."""
+    df.to_csv(REPORT_DIR / file_name, index=False)
+    df.to_csv(RESULT_DIR / file_name, index=False)
 
 
-def build_models(X_train):
-    lr = Pipeline(
-        steps=[
-            ("preprocess", make_preprocessor(X_train, scale_numeric=True)),
-            (
-                "model",
-                LogisticRegression(max_iter=2000, random_state=RANDOM_STATE),
-            ),
-        ]
-    )
-
-    gb = Pipeline(
-        steps=[
-            ("preprocess", make_preprocessor(X_train, scale_numeric=False)),
-            ("model", GradientBoostingClassifier(random_state=RANDOM_STATE)),
-        ]
-    )
-
-    return {
-        "Logistic Regression": lr,
-        "Gradient Boosting": gb,
-    }
+def save_text(content: str, file_name: str) -> None:
+    (REPORT_DIR / file_name).write_text(content, encoding="utf-8")
+    (RESULT_DIR / file_name).write_text(content, encoding="utf-8")
 
 
-def run_training():
+def run_training() -> None:
     df = load_dataset()
     X_all, y = split_xy(df)
 
@@ -77,9 +67,9 @@ def run_training():
         "without_duration": [c for c in X_all.columns if c != "duration"],
     }
 
-    rows = []
-    conf_rows = []
-    fitted = {}
+    metric_rows = []
+    confusion_rows = []
+    fitted_models = {}
 
     for fs_name, cols in feature_sets.items():
         X_train = X_all.loc[train_idx, cols]
@@ -88,9 +78,10 @@ def run_training():
         y_test = y.loc[test_idx]
 
         for model_name, model in build_models(X_train).items():
-            metric = evaluate_model(model, X_train, y_train, X_test, y_test)
-            fitted[(fs_name, model_name)] = model
-            rows.append(
+            metric = evaluate_binary_classifier(model, X_train, y_train, X_test, y_test)
+            fitted_models[(fs_name, model_name)] = model
+
+            metric_rows.append(
                 {
                     "feature_set": fs_name,
                     "model": model_name,
@@ -100,8 +91,9 @@ def run_training():
                     "recall": metric["recall"],
                 }
             )
+
             cm = metric["confusion_matrix"]
-            conf_rows.append(
+            confusion_rows.append(
                 {
                     "feature_set": fs_name,
                     "model": model_name,
@@ -112,64 +104,129 @@ def run_training():
                 }
             )
 
-    results = pd.DataFrame(rows).sort_values(
+    results_df = pd.DataFrame(metric_rows).sort_values(
         ["feature_set", "roc_auc"], ascending=[True, False]
     )
-    results.to_csv(REPORT_DIR / "model_metrics.csv", index=False)
-    pd.DataFrame(conf_rows).to_csv(REPORT_DIR / "confusion_matrices.csv", index=False)
+    confusion_df = pd.DataFrame(confusion_rows)
 
-    deploy = results[results["feature_set"] == "without_duration"].sort_values(
+    save_table(results_df, "model_metrics.csv")
+    save_table(confusion_df, "confusion_matrices.csv")
+
+    leakage_df = summarize_leakage(results_df)
+    save_table(leakage_df, "leakage_summary.csv")
+
+    deployable = results_df[results_df["feature_set"] == "without_duration"].sort_values(
         "roc_auc", ascending=False
     )
-    best_name = deploy.iloc[0]["model"]
-    best_model = fitted[("without_duration", best_name)]
+    best_deploy_model_name = deployable.iloc[0]["model"]
+    best_deploy_model = fitted_models[("without_duration", best_deploy_model_name)]
 
     X_test_deploy = X_all.loc[test_idx, feature_sets["without_duration"]]
-    y_test_deploy = y.loc[test_idx].reset_index(drop=True)
-    score = best_model.predict_proba(X_test_deploy)[:, 1]
+    y_test_deploy = y.loc[test_idx].to_numpy()
+    deploy_scores = best_deploy_model.predict_proba(X_test_deploy)[:, 1]
 
-    ranking = pd.DataFrame({"y_true": y_test_deploy, "score": score})
-    lift_rows = []
-    for pct in [0.1, 0.2, 0.3, 0.4, 0.5]:
-        thr = ranking["score"].quantile(1 - pct)
-        seg = ranking[ranking["score"] >= thr]
-        lift_rows.append(
-            {
-                "top_fraction": pct,
-                "n_customers": len(seg),
-                "conversion_rate": seg["y_true"].mean(),
-                "lift_vs_baseline": seg["y_true"].mean() / ranking["y_true"].mean(),
-            }
-        )
+    topk_extended = evaluate_topk(y_test_deploy, deploy_scores, top_fracs=[0.05, 0.10, 0.20, 0.30, 0.50])
+    save_table(topk_extended, "deployable_lift_table.csv")
 
-    lift_df = pd.DataFrame(lift_rows)
-    lift_df.to_csv(REPORT_DIR / "deployable_lift_table.csv", index=False)
+    topk_targeting = evaluate_topk(y_test_deploy, deploy_scores, top_fracs=[0.05, 0.10, 0.20, 0.30])
+    save_table(topk_targeting, "topk_metrics.csv")
 
-    X_deploy, y_deploy = split_xy(df, drop_cols=[])
-    X_deploy = X_deploy.drop(columns=["duration"], errors="ignore")
+    threshold_metrics = evaluate_thresholds(
+        y_test_deploy,
+        deploy_scores,
+        thresholds=np.linspace(0.10, 0.90, 17),
+    )
+    save_table(threshold_metrics, "threshold_metrics.csv")
 
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
-    cv_rows = []
-    for mname, pipe in build_models(X_deploy).items():
-        auc_scores = cross_val_score(pipe, X_deploy, y_deploy, cv=cv, scoring="roc_auc", n_jobs=-1)
-        cv_rows.append(
-            {
-                "model": mname,
-                "cv_auc_mean": auc_scores.mean(),
-                "cv_auc_std": auc_scores.std(),
-            }
-        )
+    assumptions = BusinessAssumptions(
+        cost_per_contact=float(os.getenv("COST_PER_CONTACT", "2.0")),
+        revenue_per_conversion=float(os.getenv("REVENUE_PER_CONVERSION", "120.0")),
+    )
 
-    cv_df = pd.DataFrame(cv_rows).sort_values("cv_auc_mean", ascending=False)
-    cv_df.to_csv(REPORT_DIR / "cv_robustness.csv", index=False)
+    business_threshold = simulate_business(
+        threshold_metrics,
+        assumptions,
+        strategy_label="threshold",
+        value_col="threshold",
+    )
+    business_topk = simulate_business(
+        topk_targeting,
+        assumptions,
+        strategy_label="top_fraction",
+        value_col="top_fraction",
+    )
 
-    print("Saved reports:")
-    print("-", REPORT_DIR / "model_metrics.csv")
-    print("-", REPORT_DIR / "confusion_matrices.csv")
-    print("-", REPORT_DIR / "deployable_lift_table.csv")
-    print("-", REPORT_DIR / "cv_robustness.csv")
-    print("\nBest deployable model:", best_name)
-    print(results.to_string(index=False))
+    business_sim = pd.concat([business_threshold, business_topk], ignore_index=True, sort=False)
+    keep_cols = [
+        "strategy_type",
+        "strategy_value",
+        "contacted_n",
+        "contacted_share",
+        "precision",
+        "recall",
+        "expected_conversions",
+        "expected_revenue",
+        "contact_cost",
+        "expected_net_gain",
+        "roi_proxy",
+    ]
+    business_sim = business_sim[keep_cols].sort_values("expected_net_gain", ascending=False)
+    save_table(business_sim, "business_simulation.csv")
+
+    recommendation_text = build_targeting_recommendation(
+        threshold_df=threshold_metrics,
+        topk_df=topk_targeting,
+        business_df=business_sim,
+        baseline_conversion=float(y_test_deploy.mean()),
+        assumptions=assumptions,
+    )
+    save_text(recommendation_text, "targeting_recommendation.md")
+
+    X_deploy_full = X_all[feature_sets["without_duration"]]
+    deploy_model_dict = build_models(X_deploy_full)
+    cv_df = run_cv_robustness(deploy_model_dict, X_deploy_full, y)
+    save_table(cv_df, "cv_robustness.csv")
+
+    save_roc_curve(
+        y_test_deploy,
+        deploy_scores,
+        FIGURE_DIR / "roc_curve_deployable.png",
+        title=f"ROC Curve ({best_deploy_model_name}, Without Duration)",
+    )
+    save_precision_recall_curve(
+        y_test_deploy,
+        deploy_scores,
+        FIGURE_DIR / "precision_recall_curve_deployable.png",
+        title=f"Precision-Recall ({best_deploy_model_name}, Without Duration)",
+    )
+    save_threshold_tradeoff(
+        threshold_metrics,
+        FIGURE_DIR / "threshold_tradeoff.png",
+    )
+    save_cumulative_gains(
+        y_test_deploy,
+        deploy_scores,
+        FIGURE_DIR / "cumulative_gains_curve.png",
+    )
+
+    print("Saved tables to reports/ and results/")
+    print("- model_metrics.csv")
+    print("- confusion_matrices.csv")
+    print("- leakage_summary.csv")
+    print("- deployable_lift_table.csv")
+    print("- topk_metrics.csv")
+    print("- threshold_metrics.csv")
+    print("- business_simulation.csv")
+    print("- cv_robustness.csv")
+    print("- targeting_recommendation.md")
+    print("\nSaved figures to results/figures/")
+    print("- roc_curve_deployable.png")
+    print("- precision_recall_curve_deployable.png")
+    print("- threshold_tradeoff.png")
+    print("- cumulative_gains_curve.png")
+
+    print("\nBest deployable model:", best_deploy_model_name)
+    print(deployable.to_string(index=False))
 
 
 if __name__ == "__main__":

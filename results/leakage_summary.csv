@@ -1,0 +1,5 @@
+feature_set,model,roc_auc,f1,precision,recall,deployable,setting_note
+with_duration,Gradient Boosting,0.9222744073432894,0.8421834385443743,0.8271334792122538,0.8577912254160364,False,Includes call duration (post-contact); leakage risk for targeting.
+with_duration,Logistic Regression,0.9066491659706553,0.8161849710982659,0.8318931657501963,0.8010590015128594,False,Includes call duration (post-contact); leakage risk for targeting.
+without_duration,Gradient Boosting,0.789950968528613,0.6947996589940324,0.7958984375,0.6164901664145235,True,Pre-contact features only; suitable for production scoring.
+without_duration,Logistic Regression,0.7572586865827196,0.6366366366366366,0.7353815659068385,0.5612708018154312,True,Pre-contact features only; suitable for production scoring.
