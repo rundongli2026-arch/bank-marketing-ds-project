@@ -161,7 +161,7 @@ def run_segmentation_and_rules() -> None:
     rules["actionable"] = rules.apply(
         lambda r: (
             (not any(item.startswith("deposit_") for item in r["antecedents"]))
-            and (r["consequents"] == frozenset({"deposit_yes"}))
+            and ("deposit_yes" in r["consequents"])
         ),
         axis=1,
     )

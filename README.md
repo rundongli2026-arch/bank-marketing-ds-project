@@ -82,7 +82,7 @@ Interpretation: `duration` materially boosts offline metrics but is not a valid 
 Four clusters show clear conversion spread (~21% to ~85%), and are summarized with actionable labels in `results/cluster_profile_actionable.csv`. Segmentation is used to **complement** model-based targeting with interpretable customer profiles.
 
 ### 5) Association rules (exploratory)
-Rule mining is retained as exploratory pattern discovery. Under strict actionability filtering, actionable `deposit_yes` rules are **0**; this is reported transparently rather than overstated.
+Rule mining is retained as exploratory pattern discovery. Under a moderate actionability filter (antecedent excludes `deposit_*`, consequent contains `deposit_yes`), the project yields **54** actionable-positive rules at current thresholds while keeping leakage control.
 
 ## Visual Outputs
 ### ROC Curve (Deployable Model)

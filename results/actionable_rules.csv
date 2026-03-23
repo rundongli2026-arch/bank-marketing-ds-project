@@ -1,1 +1,55 @@
 antecedents,consequents,support,confidence,lift
+"frozenset({'loan_no', 'poutcome_success'})","frozenset({'default_no', 'housing_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.6254901960784314,2.43775194435316
+"frozenset({'loan_no', 'poutcome_success'})","frozenset({'housing_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.6254901960784314,2.421686288112192
+"frozenset({'default_no', 'loan_no', 'poutcome_success'})","frozenset({'housing_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.6254901960784314,2.421686288112192
+frozenset({'poutcome_success'}),"frozenset({'default_no', 'housing_no', 'contact_cellular', 'deposit_yes'})",0.05930836767604372,0.6181139122315593,2.4090040112879416
+frozenset({'poutcome_success'}),"frozenset({'housing_no', 'contact_cellular', 'deposit_yes'})",0.05930836767604372,0.6181139122315593,2.393127814196554
+"frozenset({'default_no', 'poutcome_success'})","frozenset({'housing_no', 'contact_cellular', 'deposit_yes'})",0.05930836767604372,0.6181139122315593,2.393127814196554
+frozenset({'poutcome_success'}),"frozenset({'default_no', 'loan_no', 'housing_no', 'deposit_yes'})",0.0631607238846085,0.658263305322129,2.3549791711556423
+frozenset({'poutcome_success'}),"frozenset({'loan_no', 'housing_no', 'deposit_yes'})",0.0631607238846085,0.658263305322129,2.3437113282314526
+"frozenset({'default_no', 'poutcome_success'})","frozenset({'loan_no', 'housing_no', 'deposit_yes'})",0.0631607238846085,0.658263305322129,2.3437113282314526
+"frozenset({'poutcome_success', 'contact_cellular'})","frozenset({'default_no', 'loan_no', 'housing_no', 'deposit_yes'})",0.057158215373588964,0.6510204081632653,2.3290672422815284
+"frozenset({'poutcome_success', 'contact_cellular'})","frozenset({'loan_no', 'housing_no', 'deposit_yes'})",0.057158215373588964,0.6510204081632653,2.3179233798782675
+"frozenset({'default_no', 'poutcome_success', 'contact_cellular'})","frozenset({'loan_no', 'housing_no', 'deposit_yes'})",0.057158215373588964,0.6510204081632653,2.3179233798782675
+"frozenset({'loan_no', 'poutcome_success'})","frozenset({'default_no', 'housing_no', 'deposit_yes'})",0.0631607238846085,0.6911764705882354,2.3160947957688034
+"frozenset({'loan_no', 'poutcome_success'})","frozenset({'housing_no', 'deposit_yes'})",0.0631607238846085,0.6911764705882354,2.300212213686906
+"frozenset({'default_no', 'loan_no', 'poutcome_success'})","frozenset({'housing_no', 'deposit_yes'})",0.0631607238846085,0.6911764705882354,2.300212213686906
+"frozenset({'loan_no', 'poutcome_success', 'contact_cellular'})","frozenset({'default_no', 'housing_no', 'deposit_yes'})",0.057158215373588964,0.684549356223176,2.2938876956358722
+"frozenset({'housing_no', 'poutcome_success'})","frozenset({'default_no', 'loan_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.8096446700507614,2.2838650005323724
+frozenset({'poutcome_success'}),"frozenset({'default_no', 'housing_no', 'deposit_yes'})",0.06531087618706324,0.6806722689075629,2.2808957867145656
+"frozenset({'loan_no', 'poutcome_success', 'contact_cellular'})","frozenset({'housing_no', 'deposit_yes'})",0.057158215373588964,0.684549356223176,2.2781573983789776
+"frozenset({'default_no', 'loan_no', 'poutcome_success', 'contact_cellular'})","frozenset({'housing_no', 'deposit_yes'})",0.057158215373588964,0.684549356223176,2.2781573983789776
+"frozenset({'housing_no', 'poutcome_success'})","frozenset({'loan_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.8096446700507614,2.270096409722833
+"frozenset({'default_no', 'housing_no', 'poutcome_success'})","frozenset({'loan_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.8096446700507614,2.270096409722833
+frozenset({'poutcome_success'}),"frozenset({'housing_no', 'deposit_yes'})",0.06531087618706324,0.6806722689075629,2.2652545812600526
+"frozenset({'default_no', 'poutcome_success'})","frozenset({'housing_no', 'deposit_yes'})",0.06531087618706324,0.6806722689075629,2.2652545812600526
+"frozenset({'poutcome_success', 'contact_cellular'})","frozenset({'default_no', 'housing_no', 'deposit_yes'})",0.05930836767604372,0.6755102040816328,2.263597987979341
+frozenset({'poutcome_success'}),"frozenset({'default_no', 'loan_no', 'contact_cellular', 'deposit_yes'})",0.07695753449202652,0.8020541549953315,2.2624534945812207
+frozenset({'poutcome_success'}),"frozenset({'loan_no', 'contact_cellular', 'deposit_yes'})",0.07695753449202652,0.8020541549953315,2.2488139859477245
+"frozenset({'default_no', 'poutcome_success'})","frozenset({'loan_no', 'contact_cellular', 'deposit_yes'})",0.07695753449202652,0.8020541549953315,2.2488139859477245
+"frozenset({'poutcome_success', 'contact_cellular'})","frozenset({'housing_no', 'deposit_yes'})",0.05930836767604372,0.6755102040816328,2.248075401896
+"frozenset({'default_no', 'poutcome_success', 'contact_cellular'})","frozenset({'housing_no', 'deposit_yes'})",0.05930836767604372,0.6755102040816328,2.248075401896
+"frozenset({'loan_no', 'poutcome_success'})","frozenset({'default_no', 'contact_cellular', 'deposit_yes'})",0.07695753449202652,0.842156862745098,2.170435211720338
+frozenset({'poutcome_success'}),"frozenset({'default_no', 'contact_cellular', 'deposit_yes'})",0.0806307113420534,0.8403361344537815,2.1657427690540545
+"frozenset({'housing_no', 'poutcome_success'})","frozenset({'default_no', 'contact_cellular', 'deposit_yes'})",0.05930836767604372,0.8401015228426396,2.165138120057618
+"frozenset({'loan_no', 'housing_no', 'poutcome_success'})","frozenset({'default_no', 'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.8394736842105263,2.1635200330542355
+"frozenset({'loan_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.07695753449202652,0.842156862745098,2.151557542220367
+"frozenset({'default_no', 'loan_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.07695753449202652,0.842156862745098,2.151557542220367
+frozenset({'poutcome_success'}),"frozenset({'contact_cellular', 'deposit_yes'})",0.0806307113420534,0.8403361344537815,2.146905912742758
+"frozenset({'default_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.0806307113420534,0.8403361344537815,2.146905912742758
+"frozenset({'housing_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.05930836767604372,0.8401015228426396,2.146306522767119
+"frozenset({'default_no', 'housing_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.05930836767604372,0.8401015228426396,2.146306522767119
+"frozenset({'loan_no', 'housing_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.8394736842105263,2.1447025093059957
+"frozenset({'default_no', 'loan_no', 'housing_no', 'poutcome_success'})","frozenset({'contact_cellular', 'deposit_yes'})",0.057158215373588964,0.8394736842105263,2.1447025093059957
+"frozenset({'housing_no', 'poutcome_success', 'contact_cellular'})","frozenset({'default_no', 'loan_no', 'deposit_yes'})",0.057158215373588964,0.8960674157303371,2.097714868788176
+"frozenset({'housing_no', 'poutcome_success'})","frozenset({'default_no', 'loan_no', 'deposit_yes'})",0.0631607238846085,0.8946700507614214,2.094443604571935
+"frozenset({'housing_no', 'poutcome_success', 'contact_cellular'})","frozenset({'loan_no', 'deposit_yes'})",0.057158215373588964,0.8960674157303371,2.08156180944475
+"frozenset({'default_no', 'housing_no', 'poutcome_success', 'contact_cellular'})","frozenset({'loan_no', 'deposit_yes'})",0.057158215373588964,0.8960674157303371,2.08156180944475
+"frozenset({'housing_no', 'poutcome_success'})","frozenset({'loan_no', 'deposit_yes'})",0.0631607238846085,0.8946700507614214,2.07831573498418
+"frozenset({'default_no', 'housing_no', 'poutcome_success'})","frozenset({'loan_no', 'deposit_yes'})",0.0631607238846085,0.8946700507614214,2.07831573498418
+"frozenset({'poutcome_success', 'contact_cellular'})","frozenset({'default_no', 'loan_no', 'deposit_yes'})",0.07695753449202652,0.876530612244898,2.05197875291056
+frozenset({'poutcome_success'}),"frozenset({'default_no', 'loan_no', 'deposit_yes'})",0.08367676043719763,0.8720821661998132,2.0415648362253176
+"frozenset({'poutcome_success', 'contact_cellular'})","frozenset({'loan_no', 'deposit_yes'})",0.07695753449202652,0.876530612244898,2.0361778759370557
+"frozenset({'default_no', 'poutcome_success', 'contact_cellular'})","frozenset({'loan_no', 'deposit_yes'})",0.07695753449202652,0.876530612244898,2.0361778759370557
+frozenset({'poutcome_success'}),"frozenset({'loan_no', 'deposit_yes'})",0.08367676043719763,0.8720821661998132,2.025844149661252
+"frozenset({'default_no', 'poutcome_success'})","frozenset({'loan_no', 'deposit_yes'})",0.08367676043719763,0.8720821661998132,2.025844149661252
