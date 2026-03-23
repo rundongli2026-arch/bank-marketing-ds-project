@@ -1,0 +1,9 @@
+﻿numpy>=2.0
+pandas>=2.2
+matplotlib>=3.8
+scikit-learn>=1.5
+mlxtend>=0.23
+kagglehub>=0.3
+jupyter>=1.0
+nbclient>=0.10
+nbformat>=5.10
