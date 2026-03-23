@@ -116,7 +116,6 @@ Rule mining is retained as exploratory pattern discovery. Under strict actionabi
 - Validate incremental impact with randomized A/B test before full rollout.
 
 ## Repository Structure
-- `notebooks/bank_marketing_case_study.ipynb`: full narrative notebook (kept, not removed)
 - `src/data_utils.py`: data loading and preprocessing utilities
 - `src/evaluate.py`: model building and evaluation helpers
 - `src/business_metrics.py`: threshold/top-K/business simulation logic
@@ -158,11 +157,6 @@ python src/train.py
 python src/segment_and_rules.py
 ```
 
-### 4) Open notebook (optional)
-```bash
-jupyter notebook notebooks/bank_marketing_case_study.ipynb
-```
-
 Optional business assumptions for simulation:
 PowerShell:
 ```powershell
@@ -196,4 +190,4 @@ python src/train.py
 
 ## Notes
 - Business simulation outputs are scenario-based estimates under stated assumptions, not production outcomes.
-- Notebook outputs are intentionally not committed; reproducible tables/figures are committed in `results/`.
+- This repository is script-first for cleaner version control and easier reproducibility.

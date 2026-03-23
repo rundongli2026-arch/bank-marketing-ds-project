@@ -32,22 +32,19 @@ from plot_utils import (
 
 
 RANDOM_STATE = 42
-REPORT_DIR = Path("reports")
 RESULT_DIR = Path("results")
 FIGURE_DIR = RESULT_DIR / "figures"
 
-for p in [REPORT_DIR, RESULT_DIR, FIGURE_DIR]:
+for p in [RESULT_DIR, FIGURE_DIR]:
     ensure_dir(p)
 
 
 def save_table(df: pd.DataFrame, file_name: str) -> None:
-    """Save a table to both reports/ and results/ for analysis + portfolio display."""
-    df.to_csv(REPORT_DIR / file_name, index=False)
+    """Save a table to results/ for portfolio display."""
     df.to_csv(RESULT_DIR / file_name, index=False)
 
 
 def save_text(content: str, file_name: str) -> None:
-    (REPORT_DIR / file_name).write_text(content, encoding="utf-8")
     (RESULT_DIR / file_name).write_text(content, encoding="utf-8")
 
 
@@ -209,7 +206,7 @@ def run_training() -> None:
         FIGURE_DIR / "cumulative_gains_curve.png",
     )
 
-    print("Saved tables to reports/ and results/")
+    print("Saved tables to results/")
     print("- model_metrics.csv")
     print("- confusion_matrices.csv")
     print("- leakage_summary.csv")

@@ -1,11 +1,11 @@
 antecedents,consequents,support,confidence,lift
-"frozenset({'default_no', 'marital_married', 'contact_unknown', 'housing_yes'})","frozenset({'deposit_no', 'poutcome_unknown', 'month_may'})",0.057158215373588964,0.6536885245901639,4.603451931530227
-"frozenset({'marital_married', 'contact_unknown', 'housing_yes'})","frozenset({'default_no', 'deposit_no', 'poutcome_unknown', 'month_may'})",0.057158215373588964,0.6412060301507537,4.602663478162516
-"frozenset({'marital_married', 'contact_unknown', 'housing_yes'})","frozenset({'deposit_no', 'poutcome_unknown', 'month_may'})",0.05823329152481634,0.6532663316582915,4.6004787343658355
-"frozenset({'marital_married', 'deposit_no', 'poutcome_unknown', 'month_may'})","frozenset({'default_no', 'contact_unknown', 'housing_yes'})",0.057158215373588964,0.6737064413938754,4.557521999296022
-"frozenset({'default_no', 'month_may', 'poutcome_unknown', 'marital_married', 'deposit_no'})","frozenset({'contact_unknown', 'housing_yes'})",0.057158215373588964,0.6867599569429494,4.538552184367792
-"frozenset({'marital_married', 'deposit_no', 'poutcome_unknown', 'month_may'})","frozenset({'contact_unknown', 'housing_yes'})",0.05823329152481634,0.6863780359028512,4.536028204113455
-"frozenset({'deposit_no', 'poutcome_unknown', 'month_jun'})",frozenset({'contact_unknown'}),0.05420175595771367,0.9307692307692307,4.428493671716177
-"frozenset({'deposit_no', 'poutcome_unknown', 'month_jun'})","frozenset({'default_no', 'contact_unknown'})",0.0527683210894105,0.9061538461538461,4.422601325216104
-"frozenset({'default_no', 'deposit_no', 'poutcome_unknown', 'month_jun'})",frozenset({'contact_unknown'}),0.0527683210894105,0.9290220820189274,4.420180937551265
-"frozenset({'loan_no', 'deposit_no', 'poutcome_unknown', 'month_may'})","frozenset({'default_no', 'contact_unknown', 'housing_yes'})",0.07946604551155707,0.6526857983811627,4.415320534260933
+"frozenset({'housing_yes', 'default_no', 'contact_unknown', 'marital_married'})","frozenset({'poutcome_unknown', 'deposit_no', 'month_may'})",0.057158215373588964,0.6536885245901639,4.603451931530227
+"frozenset({'housing_yes', 'contact_unknown', 'marital_married'})","frozenset({'poutcome_unknown', 'deposit_no', 'default_no', 'month_may'})",0.057158215373588964,0.6412060301507537,4.602663478162516
+"frozenset({'housing_yes', 'contact_unknown', 'marital_married'})","frozenset({'poutcome_unknown', 'deposit_no', 'month_may'})",0.05823329152481634,0.6532663316582915,4.6004787343658355
+"frozenset({'poutcome_unknown', 'deposit_no', 'month_may', 'marital_married'})","frozenset({'housing_yes', 'default_no', 'contact_unknown'})",0.057158215373588964,0.6737064413938754,4.557521999296022
+"frozenset({'deposit_no', 'month_may', 'default_no', 'poutcome_unknown', 'marital_married'})","frozenset({'housing_yes', 'contact_unknown'})",0.057158215373588964,0.6867599569429494,4.538552184367792
+"frozenset({'poutcome_unknown', 'deposit_no', 'month_may', 'marital_married'})","frozenset({'housing_yes', 'contact_unknown'})",0.05823329152481634,0.6863780359028512,4.536028204113455
+"frozenset({'poutcome_unknown', 'deposit_no', 'month_jun'})",frozenset({'contact_unknown'}),0.05420175595771367,0.9307692307692307,4.428493671716177
+"frozenset({'poutcome_unknown', 'deposit_no', 'month_jun'})","frozenset({'default_no', 'contact_unknown'})",0.0527683210894105,0.9061538461538461,4.422601325216104
+"frozenset({'poutcome_unknown', 'deposit_no', 'default_no', 'month_jun'})",frozenset({'contact_unknown'}),0.0527683210894105,0.9290220820189274,4.420180937551265
+"frozenset({'poutcome_unknown', 'deposit_no', 'loan_no', 'month_may'})","frozenset({'housing_yes', 'default_no', 'contact_unknown'})",0.07946604551155707,0.6526857983811627,4.415320534260933

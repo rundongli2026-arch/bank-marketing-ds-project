@@ -15,16 +15,14 @@ from plot_utils import ensure_dir, save_segment_conversion_bar
 
 
 RANDOM_STATE = 42
-REPORT_DIR = Path("reports")
 RESULT_DIR = Path("results")
 FIGURE_DIR = RESULT_DIR / "figures"
 
-for p in [REPORT_DIR, RESULT_DIR, FIGURE_DIR]:
+for p in [RESULT_DIR, FIGURE_DIR]:
     ensure_dir(p)
 
 
 def save_table(df: pd.DataFrame, file_name: str) -> None:
-    df.to_csv(REPORT_DIR / file_name, index=False)
     df.to_csv(RESULT_DIR / file_name, index=False)
 
 
@@ -177,7 +175,7 @@ def run_segmentation_and_rules() -> None:
     exploratory_top = rules.sort_values(["lift", "confidence", "support"], ascending=False).head(10)
     save_table(exploratory_top[actionable_cols], "exploratory_rules_top10.csv")
 
-    print("Saved tables to reports/ and results/")
+    print("Saved tables to results/")
     print("- silhouette_by_k.csv")
     print("- cluster_summary.csv")
     print("- cluster_profile_actionable.csv")
