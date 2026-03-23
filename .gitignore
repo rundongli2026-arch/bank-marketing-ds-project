@@ -12,6 +12,8 @@ reports/
 # Local data
 data/raw/
 *.csv
+!results/
+!results/*.csv
 
 # OS
 .DS_Store

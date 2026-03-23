@@ -1,0 +1,3 @@
+algorithm,n_itemsets,n_rules,runtime_seconds
+Apriori,2298,1138,0.5450019836425781
+FP-Growth,2298,1138,0.25299882888793945
